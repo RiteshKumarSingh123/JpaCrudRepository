@@ -11,9 +11,9 @@ public interface CompanyService {
 
 public Company saveCompanyInfo(Company company);
 	
-	public CompanyDetails getCompanyList();
+	public CompanyDetails getCompanyList(int page, int size);
 	
-	public CompanyDetails getCompanyDetailsList();
+	public CompanyDetails getCompanyDetailsList(int page, int size);
 	
 	public Optional<Company> getCompanyById(long companyId);
 	
@@ -25,7 +25,7 @@ public Company saveCompanyInfo(Company company);
 	
 	public Workers saveWorkersData(Workers worker); 
 	
-	public CompanyDetails getWorkersList();
+	public CompanyDetails getWorkersList(int page, int size);
 
 	public Optional<Workers> getWorkersById(long workerId);
 	
@@ -35,7 +35,7 @@ public Company saveCompanyInfo(Company company);
 	
 	public Customers saveCustomersData(Customers customers);
 	
-	public CompanyDetails getCustomersList();
+	public CompanyDetails getCustomersList(int page ,int size);
 	
 	public  Optional<Customers> getCustomerById(long customerId);
 	

@@ -31,14 +31,16 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getCompanyList")
-	public CompanyDetails getCompanyList(){
-		CompanyDetails listOfCompanies = service.getCompanyList();
+	public CompanyDetails getCompanyList(@RequestParam(defaultValue = "1") int page,
+	        @RequestParam(defaultValue = "10") int size){
+		CompanyDetails listOfCompanies = service.getCompanyList(page-1, size);
 		return listOfCompanies;
 	}
 	
 	@GetMapping("getCompanyDetailsList")
-	public CompanyDetails getCompanyDetailsList(){
-		CompanyDetails listOfCompanies = service.getCompanyDetailsList();
+	public CompanyDetails getCompanyDetailsList(@RequestParam(defaultValue = "1") int page,
+	        @RequestParam(defaultValue = "10") int size){
+		CompanyDetails listOfCompanies = service.getCompanyDetailsList(page-1, size);
 		return listOfCompanies;
 	}
 	
@@ -73,8 +75,9 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getWorkersList")
-	public CompanyDetails getWorkersList(){
-		CompanyDetails workersList = service.getWorkersList();
+	public CompanyDetails getWorkersList(@RequestParam(defaultValue = "1") int page,
+	        @RequestParam(defaultValue = "10") int size){
+		CompanyDetails workersList = service.getWorkersList(page-1, size);
 		return workersList;
 	}
 	
@@ -103,8 +106,9 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getCustomersList")
-	public CompanyDetails getCustomersList(){
-		CompanyDetails customersList = service.getCustomersList();
+	public CompanyDetails getCustomersList(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size){
+		CompanyDetails customersList = service.getCustomersList(page-1, size);
 		return customersList;
 	}
 	

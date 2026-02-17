@@ -8,6 +8,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Company;
@@ -49,14 +52,17 @@ public class CompanyUserSevice implements CompanyService {
 //		}
 	
 	@Override
-	public CompanyDetails getCompanyList() {
-		List<Company> companyList = repository.findAll();
-		
+	public CompanyDetails getCompanyList(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+//		List<Company> companyList = repository.findAll();
+		Page<Company> companyPage = repository.findAll(pageable);
+		List<Company> companyList = companyPage.getContent();
 		CompanyDetails companyFilter = companyList.stream().map(a->{a.setCompanyName(a.getCompanyName().toUpperCase());return a;}).sorted(Comparator.comparing(Company::getCompanyId).reversed())
 		.collect(Collectors.collectingAndThen(Collectors.toList(), detailsList->{
 		CompanyDetails setDetails = new CompanyDetails();
 		setDetails.setCompanyFilter(detailsList);
-		setDetails.setCount(detailsList.size());
+		setDetails.setCount(companyPage.getTotalElements());
+		setDetails.setTotalPages(companyPage.getTotalPages());
 		return setDetails;
 		}));
 		
@@ -64,8 +70,11 @@ public class CompanyUserSevice implements CompanyService {
 	}
 		
 	@Override
-	public CompanyDetails getCompanyDetailsList() {
-		List<Company> companyList = repository.findAll();
+	public CompanyDetails getCompanyDetailsList(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+//		List<Company> companyList = repository.findAll();
+		Page<Company> companyPage = repository.findAll(pageable);
+		List<Company> companyList = companyPage.getContent();
 		CompanyDetails companyDetailsData = companyList.stream().map(a->{
 			a.setCompanyName(a.getCompanyName().toUpperCase());
 			a.setOwnerName(a.getOwnerName().toUpperCase());
@@ -75,7 +84,8 @@ public class CompanyUserSevice implements CompanyService {
 		.collect(Collectors.collectingAndThen(Collectors.toList(), listOfCompany->{
 		CompanyDetails details = new CompanyDetails();
 		details.setCompanyFilter(listOfCompany);
-		details.setCount(listOfCompany.size());
+		details.setCount(companyPage.getTotalElements());
+		details.setTotalPages(companyPage.getTotalPages());
 		return details;
 		}));
 		return companyDetailsData;
@@ -136,8 +146,11 @@ public class CompanyUserSevice implements CompanyService {
 	}
 
 	@Override
-	public CompanyDetails getWorkersList() {
-		List<Workers> workersDataList = workerRepo.findAll();
+	public CompanyDetails getWorkersList(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Workers> workersPage = workerRepo.findAll(pageable);
+//		List<Workers> workersDataList = workerRepo.findAll();
+		List<Workers> workersDataList = workersPage.getContent();
 		CompanyDetails workerFilterList = workersDataList.stream()
 				.map(a->{a.setWorkerName(a.getWorkerName().toUpperCase());
 				a.setUnderWhichCompany(a.getUnderWhichCompany().toUpperCase());        
@@ -146,7 +159,8 @@ public class CompanyUserSevice implements CompanyService {
 				.collect(Collectors.collectingAndThen(Collectors.toList(), listOfWorkers->{
 				CompanyDetails details = new CompanyDetails();	
 				details.setWorkersFilter(listOfWorkers);
-				details.setCount(listOfWorkers.size());
+				details.setCount(workersPage.getTotalElements());
+				details.setTotalPages(workersPage.getTotalPages());
 				return details;
 				}));
 		return workerFilterList;
@@ -195,14 +209,18 @@ public class CompanyUserSevice implements CompanyService {
 	}
 
 	@Override
-	public CompanyDetails getCustomersList() {
-	    List<Customers> customersList = customerRepo.findAll();
+	public CompanyDetails getCustomersList(int page , int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Customers> customerPageable = customerRepo.findAll(pageable);
+//	    List<Customers> customersList = customerRepo.findAll();
+		List<Customers> customersList = customerPageable.getContent();
 	    CompanyDetails details = customersList.stream().map(a->{a.setCustomerName(a.getCustomerName().toUpperCase());return a;})
 	    		.sorted(Comparator.comparing(Customers::getCustomerId).reversed())
 	    		.collect(Collectors.collectingAndThen(Collectors.toList(), customerListData->{
 	    			CompanyDetails companyData = new CompanyDetails();
 	    			companyData.setCustomersFilter(customerListData);
-	    			companyData.setCount(customerListData.size());
+	    			companyData.setCount(customerPageable.getTotalElements());
+	    			companyData.setTotalPages(customerPageable.getTotalPages());
 	    			return companyData;
 	    		}));
 		return details;

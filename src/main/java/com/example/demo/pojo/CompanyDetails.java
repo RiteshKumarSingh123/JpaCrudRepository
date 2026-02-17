@@ -11,7 +11,14 @@ private long count;
 private List<Company> companyFilter;
 private List<Workers> workersFilter;
 private List<Customers> customersFilter;
+private long totalPages;
 
+public long getTotalPages() {
+	return totalPages;
+}
+public void setTotalPages(long totalPages) {
+	this.totalPages = totalPages;
+}
 public long getCount() {
 	return count;
 }
